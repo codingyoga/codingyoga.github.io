@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>~/manasa — projects.list()</title>
+<meta name="description" content="Software engineer building voice, music, and yoga tools with AI. Manasa Basavaraj.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0a0d12;
+  --bg-2:      #0d1117;
+  --surface:   #11161e;
+  --surface-2: #161b24;
+  --surface-3: #1c2230;
+  --fg:        #e7edf3;
+  --muted:     #8b949e;
+  --dim:       #6e7681;
+  --border:    #21262d;
+  --border-hi: #30363d;
+  --green:     #56d364;
+  --green-2:   #46c553;
+  --cyan:      #79c0ff;
+  --magenta:   #d2a8ff;
+  --orange:    #ffa657;
+  --pink:      #ff7b72;
+
+  --mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.005em;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+
+/* ambient grid behind */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, #1a1f29 1px, transparent 1px),
+    linear-gradient(to bottom, #1a1f29 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black, transparent 75%);
+}
+
+/* top: editor-style title bar */
+.titlebar {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 22px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+}
+.titlebar .lights { display: flex; gap: 7px; }
+.titlebar .lights span { width: 11px; height: 11px; border-radius: 50%; }
+.titlebar .lights span:nth-child(1) { background: #ff5f56; }
+.titlebar .lights span:nth-child(2) { background: #ffbd2e; }
+.titlebar .lights span:nth-child(3) { background: #27c93f; }
+.titlebar .path { display: flex; align-items: center; gap: 6px; }
+.titlebar .path .seg { color: var(--muted); }
+.titlebar .path .sep { color: var(--dim); }
+.titlebar .path .file { color: var(--cyan); }
+
+.wrap {
+  position: relative; z-index: 2;
+  max-width: 1180px; margin: 0 auto;
+  padding: 56px 28px 100px;
+  display: grid; grid-template-columns: 220px 1fr; gap: 36px;
+}
+@media (max-width: 880px) { .wrap { grid-template-columns: 1fr; gap: 18px; padding: 28px 18px 80px; } }
+
+/* file tree sidebar */
+.tree {
+  position: sticky; top: 28px; align-self: start;
+  font-family: var(--mono); font-size: 13px;
+  color: var(--muted); line-height: 2;
+  border-left: 1px solid var(--border); padding-left: 16px;
+}
+.tree .root { color: var(--fg); display: flex; align-items: center; gap: 6px; }
+.tree .root::before { content: "▾"; color: var(--cyan); font-size: 10px; }
+.tree ul { list-style: none; padding-left: 14px; }
+.tree li { padding-left: 16px; position: relative; }
+.tree li::before { content: ""; position: absolute; left: 0; top: 50%; width: 12px; height: 1px; background: var(--border); }
+.tree li.f::after { content: "📄"; margin-left: -2px; opacity: 0; }
+.tree a { color: var(--muted); transition: color .2s ease; cursor: pointer; }
+.tree a:hover, .tree a.active { color: var(--green); }
+.tree .active { color: var(--green); }
+.tree .small { color: var(--dim); font-size: 11px; }
+@media (max-width: 880px) { .tree { display: none; } }
+
+/* main column */
+main {}
+
+nav.top {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 13px;
+  color: var(--muted);
+  padding-bottom: 28px;
+}
+nav.top .links { display: flex; gap: 22px; }
+nav.top .links a { transition: color .2s ease; }
+nav.top .links a:hover { color: var(--green); }
+nav.top .you { color: var(--fg); display: inline-flex; align-items: center; gap: 8px; }
+nav.top .you .pulse {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* terminal hero */
+.terminal {
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 10px;
+  font-family: var(--mono); font-size: 14px;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+.terminal .head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface-2); border-bottom: 1px solid var(--border);
+  font-size: 12px; color: var(--muted);
+}
+.terminal .head .lights { display: flex; gap: 6px; }
+.terminal .head .lights span { width: 10px; height: 10px; border-radius: 50%; }
+.terminal .head .lights span:nth-child(1) { background: #ff5f56; }
+.terminal .head .lights span:nth-child(2) { background: #ffbd2e; }
+.terminal .head .lights span:nth-child(3) { background: #27c93f; }
+.terminal .body { padding: 22px 22px 28px; }
+.line { display: block; line-height: 1.7; color: var(--fg); }
+.line.comment { color: var(--dim); }
+.line .prompt { color: var(--green); }
+.line .you { color: var(--cyan); }
+.line .at { color: var(--muted); }
+.line .host { color: var(--magenta); }
+.line .colon { color: var(--muted); }
+.line .path { color: var(--orange); }
+.line .dollar { color: var(--green); margin-right: 6px; }
+.line .out { color: var(--fg); }
+.line .key { color: var(--magenta); }
+.line .str { color: var(--cyan); }
+.line .num { color: var(--orange); }
+.cursor { display: inline-block; width: 8px; height: 16px; background: var(--green); vertical-align: -2px; margin-left: 4px; animation: blink 1s steps(2) infinite; }
+@keyframes blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+
+h1.headline {
+  font-family: var(--sans); font-weight: 600;
+  font-size: clamp(36px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.025em;
+  margin: 0 0 16px;
+}
+h1 .accent { color: var(--green); }
+.lede {
+  font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 620px;
+  margin-bottom: 36px;
+}
+
+/* repo cards */
+.section-h {
+  display: flex; align-items: baseline; gap: 14px;
+  font-family: var(--mono); font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+.section-h .num { color: var(--green); }
+.section-h .rule { flex: 1; height: 1px; background: var(--border); margin-bottom: 4px; }
+
+.repos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 760px) { .repos { grid-template-columns: 1fr; } }
+
+.repo {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 22px 18px;
+  display: flex; flex-direction: column;
+  transition: transform .25s ease, border-color .25s ease, background .25s ease;
+  font-family: var(--sans);
+}
+.repo:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-hi);
+  background: var(--surface-2);
+}
+.repo .top {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 13px;
+  margin-bottom: 12px;
+}
+.repo .top .icon { color: var(--muted); }
+.repo .top .name { color: var(--cyan); font-weight: 500; }
+.repo .top .name:hover { text-decoration: underline; }
+.repo .top .vis { color: var(--muted); border: 1px solid var(--border); padding: 1px 7px; border-radius: 999px; font-size: 11px; }
+.repo .desc {
+  font-size: 14px; line-height: 1.55; color: var(--muted);
+  margin-bottom: 16px; flex: 1;
+}
+.repo .meta {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  align-items: center;
+  margin-top: auto;
+  padding-top: 14px; border-top: 1px dashed var(--border);
+}
+.repo .lang { display: inline-flex; align-items: center; gap: 6px; }
+.repo .lang .dot { width: 10px; height: 10px; border-radius: 50%; }
+.repo .lang.ts .dot { background: #3178c6; } .repo .lang.ts span { color: #79c0ff; }
+.repo .lang.js .dot { background: #f1e05a; } .repo .lang.js span { color: #f1e05a; }
+.repo .lang.py .dot { background: #3572A5; } .repo .lang.py span { color: #79c0ff; }
+.repo .lang.html .dot { background: #e34c26; } .repo .lang.html span { color: #ffa657; }
+.repo .links { margin-left: auto; display: flex; gap: 12px; }
+.repo .links a {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px;
+  background: var(--surface-3); border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px; color: var(--fg);
+  transition: background .2s ease, color .2s ease;
+}
+.repo .links a:hover { background: var(--green); color: var(--bg); border-color: var(--green); }
+.repo .links a.live { color: var(--green); }
+.repo .links a.live:hover { color: var(--bg); background: var(--green); }
+.repo .links svg { width: 11px; height: 11px; }
+
+/* ---------- ASCII diagram below cards ---------- */
+.ascii-block {
+  margin-top: 34px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 24px;
+  font-family: var(--mono); font-size: 13px; line-height: 1.7;
+  color: var(--muted);
+  white-space: pre;
+  overflow-x: auto;
+}
+.ascii-block .h { color: var(--green); }
+.ascii-block .l { color: var(--cyan); }
+.ascii-block .y { color: var(--orange); }
+.ascii-block .p { color: var(--magenta); }
+
+/* footer */
+footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 12px; color: var(--dim);
+  flex-wrap: wrap; gap: 16px;
+}
+footer a { color: var(--muted); }
+footer a:hover { color: var(--green); }
+footer .right { display: flex; gap: 18px; }
+
+/* entrance */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.r { opacity: 0; animation: fadeUp .7s cubic-bezier(.2,.8,.2,1) both; }
+.r1 { animation-delay: 0s; } .r2 { animation-delay: .08s; } .r3 { animation-delay: .16s; }
+.r4 { animation-delay: .24s; } .r5 { animation-delay: .32s; } .r6 { animation-delay: .40s; }
+
+/* ============================================================
+   SHARED THEME SWITCHER
+   ============================================================ */
+.tweaks-launcher {
+  position: fixed; right: 22px; bottom: 22px; z-index: 50;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px;
+  background: var(--surface); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 999px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -8px #000;
+  transition: transform .2s, border-color .2s;
+}
+.tweaks-launcher:hover { transform: translateY(-2px); border-color: var(--green); }
+.tweaks-launcher svg { width: 13px; height: 13px; }
+.tweaks-panel {
+  position: fixed; right: 22px; bottom: 70px; z-index: 50;
+  width: 280px;
+  background: var(--surface); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 24px 60px -20px #000;
+  opacity: 0; transform: translateY(8px) scale(0.97); pointer-events: none;
+  transition: opacity .2s, transform .2s;
+}
+.tweaks-panel.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.tweaks-panel .title-bar {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.tweaks-panel .x { cursor: pointer; opacity: 0.7; font-size: 16px; transition: opacity .15s, color .15s; }
+.tweaks-panel .x:hover { opacity: 1; color: var(--green); }
+.theme-grid { display: grid; gap: 8px; }
+.theme-pill {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px;
+  background: transparent; border: 1px solid var(--border); border-radius: 10px;
+  cursor: pointer; text-align: left;
+  transition: background .2s, border-color .2s;
+  color: var(--fg); font-family: inherit;
+}
+.theme-pill:hover { background: var(--surface-2); }
+.theme-pill[aria-pressed="true"] { border-color: var(--green); background: var(--surface-2); }
+.theme-pill .swatch { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.15); }
+.theme-pill .swatch.vedic { background: radial-gradient(circle at 50% 50%, oklch(0.78 0.13 78), transparent 60%), oklch(0.18 0.06 285); }
+.theme-pill .swatch.tech { background: linear-gradient(135deg, oklch(0.10 0.005 250) 0%, oklch(0.10 0.005 250) 50%, oklch(0.75 0.16 145) 50%, oklch(0.75 0.16 145) 100%); }
+.theme-pill .swatch.generic { background: linear-gradient(135deg, oklch(0.45 0.16 250) 0%, oklch(0.45 0.16 250) 25%, oklch(0.985 0.005 250) 25%); }
+.theme-pill .meta { display: flex; flex-direction: column; gap: 2px; }
+.theme-pill .name { font-size: 13.5px; font-weight: 500; }
+.theme-pill .sub { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+.tweaks-panel .footnote { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); font-size: 11px; color: var(--dim); font-family: var(--mono); }
+</style>
+</head>
+<body>
+
+<div class="titlebar">
+  <div class="lights"><span></span><span></span><span></span></div>
+  <div class="path">
+    <span class="seg">~</span><span class="sep">/</span>
+    <span class="seg">manasa</span><span class="sep">/</span>
+    <span class="file">portfolio.md</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <aside class="tree" aria-hidden="true">
+    <div class="root">manasa@studio</div>
+    <ul>
+      <li><a href="#vaikhari" class="active">vaikhari/</a></li>
+      <li><a href="#carvemusic">carvemusic/</a></li>
+      <li><a href="#instrumental-flow">instrumental-flow/</a></li>
+      <li><a href="#yoga-guru">yoga-guru/</a></li>
+      <li class="small">... 30+ more</li>
+    </ul>
+    <div class="root" style="margin-top: 18px;">links</div>
+    <ul>
+      <li><a href="https://github.com/codingyoga" target="_blank" rel="noopener">github ↗</a></li>
+      <li><a href="mailto:codingyoga@gmail.com">email</a></li>
+    </ul>
+  </aside>
+
+  <main>
+
+    <nav class="top r r1">
+      <div class="you"><span class="pulse"></span> manasa@studio:~$</div>
+      <div class="links">
+        <a href="#projects">projects</a>
+        <a href="https://github.com/codingyoga" target="_blank" rel="noopener">github ↗</a>
+      </div>
+    </nav>
+
+    <section class="terminal r r2">
+      <div class="head">
+        <div class="lights"><span></span><span></span><span></span></div>
+        <span>zsh — manasa@studio</span>
+      </div>
+      <div class="body">
+        <span class="line"><span class="dollar">$</span> <span class="out">whoami</span></span>
+        <span class="line"><span class="out">manasa basavaraj &nbsp;&middot;&nbsp; software engineer &nbsp;&middot;&nbsp; bengaluru &middot; bay area &middot; the internet</span></span>
+        <span class="line comment">&nbsp;</span>
+        <span class="line"><span class="dollar">$</span> <span class="out">cat about.md</span></span>
+        <span class="line"><span class="out">i build small AI tools at the intersection of voice, music, and breath.</span></span>
+        <span class="line"><span class="out">each one focused. each one a quiet experiment.</span></span>
+        <span class="line comment">&nbsp;</span>
+        <span class="line"><span class="dollar">$</span> <span class="out">ls projects/ <span class="key">--sort=love</span></span></span>
+        <span class="line"><span class="key">drwxr-xr-x</span> &nbsp;manasa &nbsp;<span class="str">vaikhari/</span>           <span class="comment"># real-time speech coach</span></span>
+        <span class="line"><span class="key">drwxr-xr-x</span> &nbsp;manasa &nbsp;<span class="str">carvemusic/</span>         <span class="comment"># AI playlist DJ</span></span>
+        <span class="line"><span class="key">drwxr-xr-x</span> &nbsp;manasa &nbsp;<span class="str">instrumental-flow/</span>  <span class="comment"># AI world instrumentals</span></span>
+        <span class="line"><span class="key">drwxr-xr-x</span> &nbsp;manasa &nbsp;<span class="str">yoga-guru/</span>          <span class="comment"># AI yoga teacher</span></span>
+        <span class="line comment">&nbsp;</span>
+        <span class="line"><span class="dollar">$</span><span class="cursor"></span></span>
+      </div>
+    </section>
+
+    <section class="r r3">
+      <h1 class="headline">Things I'm building at the <span class="accent">edge of AI</span>, music, and breath.</h1>
+      <p class="lede">I make small, focused tools — a real-time speech coach, an instrumental streaming flow, an AI yoga teacher, an AI playlist DJ. Each one a little experiment in what AI can do for the things I care about.</p>
+    </section>
+
+    <section id="projects" class="r r4">
+      <div class="section-h">
+        <span class="num">// 04</span>
+        <span>active projects</span>
+        <span class="rule"></span>
+        <span>$ cat README.md</span>
+      </div>
+
+      <div class="repos">
+
+        <article class="repo" id="vaikhari">
+          <div class="top">
+            <span class="icon">📦</span>
+            <a class="name" href="https://github.com/codingyoga/vaikhari" target="_blank" rel="noopener">codingyoga/vaikhari</a>
+            <span class="vis">public</span>
+          </div>
+          <p class="desc">A real-time speech coach for live calls. You speak naturally on Zoom; Vaikhari listens, detects when you finish a thought, and shows a polished version in the voice you choose — Executive, Marketer, Technical, Friendly, Comedian.</p>
+          <div class="meta">
+            <span class="lang ts"><span class="dot"></span><span>TypeScript</span></span>
+            <span>· Web Audio</span>
+            <span class="links">
+              <a href="https://github.com/codingyoga/vaikhari" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.5c.5.09.68-.21.68-.48v-1.7c-2.78.6-3.36-1.34-3.36-1.34a2.66 2.66 0 0 0-1.1-1.46c-.91-.62.07-.6.07-.6a2.1 2.1 0 0 1 1.53 1.03 2.13 2.13 0 0 0 2.91.83 2.16 2.16 0 0 1 .63-1.34c-2.22-.25-4.55-1.11-4.55-4.94a3.87 3.87 0 0 1 1.03-2.69 3.6 3.6 0 0 1 .1-2.66s.84-.27 2.75 1.02a9.46 9.46 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02a3.6 3.6 0 0 1 .1 2.66 3.87 3.87 0 0 1 1.03 2.69c0 3.84-2.34 4.69-4.57 4.93a2.39 2.39 0 0 1 .68 1.85V21c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+                source
+              </a>
+            </span>
+          </div>
+        </article>
+
+        <article class="repo" id="carvemusic">
+          <div class="top">
+            <span class="icon">📦</span>
+            <a class="name" href="https://github.com/codingyoga/CarveMusic" target="_blank" rel="noopener">codingyoga/CarveMusic</a>
+            <span class="vis">public</span>
+          </div>
+          <p class="desc">An AI chat-driven playlist generator. Tell it a mood, a memory, a moment — it builds a playlist that actually fits.</p>
+          <div class="meta">
+            <span class="lang ts"><span class="dot"></span><span>TypeScript</span></span>
+            <span>· GPT · Vercel</span>
+            <span class="links">
+              <a class="live" href="https://carvemusic.vercel.app" target="_blank" rel="noopener">↗ live</a>
+              <a href="https://github.com/codingyoga/CarveMusic" target="_blank" rel="noopener">source</a>
+            </span>
+          </div>
+        </article>
+
+        <article class="repo" id="instrumental-flow">
+          <div class="top">
+            <span class="icon">📦</span>
+            <a class="name" href="https://github.com/codingyoga/instrumental-flow" target="_blank" rel="noopener">codingyoga/instrumental-flow</a>
+            <span class="vis">public</span>
+          </div>
+          <p class="desc">Three traditions, twelve pieces, crossfading endlessly. AI-made instrumentals from India, Arabia, and Japan — for focus, study, and rest.</p>
+          <div class="meta">
+            <span class="lang js"><span class="dot"></span><span>JavaScript</span></span>
+            <span>· React · Suno</span>
+            <span class="links">
+              <a class="live" href="https://codingyoga.github.io/instrumental-flow/" target="_blank" rel="noopener">▸ listen</a>
+              <a href="https://github.com/codingyoga/instrumental-flow" target="_blank" rel="noopener">source</a>
+            </span>
+          </div>
+        </article>
+
+        <article class="repo" id="yoga-guru">
+          <div class="top">
+            <span class="icon">📦</span>
+            <a class="name" href="https://github.com/codingyoga/yoga-guru" target="_blank" rel="noopener">codingyoga/yoga-guru</a>
+            <span class="vis">public</span>
+          </div>
+          <p class="desc">A strict personal yoga coach, AI-powered. It builds a personalized day-by-day program and walks with you through it. No fluff, no shortcuts.</p>
+          <div class="meta">
+            <span class="lang py"><span class="dot"></span><span>Python</span></span>
+            <span>· LLM</span>
+            <span class="links">
+              <a href="https://github.com/codingyoga/yoga-guru" target="_blank" rel="noopener">source</a>
+            </span>
+          </div>
+        </article>
+
+      </div>
+
+      <pre class="ascii-block r r5">
+<span class="h">// the through-line</span>
+
+   <span class="l">vaikhari</span> ────────────► <span class="p">voice</span>
+   <span class="l">carvemusic</span> ──────────► <span class="p">music</span>           ┐
+   <span class="l">instrumental-flow</span> ───► <span class="p">music</span>           ├──►  <span class="y">embodied AI</span>
+   <span class="l">yoga-guru</span> ───────────► <span class="p">breath / body</span>   ┘
+
+   <span class="h">// motto</span>
+   <span class="comment">&gt;</span> small tools, made with care, for the things we already practice.
+      </pre>
+    </section>
+
+    <footer>
+      <span>// © 2026 manasa b. — exit 0</span>
+      <span class="right">
+        <a href="https://github.com/codingyoga" target="_blank" rel="noopener">github</a>
+        <a href="mailto:codingyoga@gmail.com">email</a>
+      </span>
+    </footer>
+
+  </main>
+</div>
+
+<button class="tweaks-launcher" id="tweaks-toggle" aria-haspopup="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  customize
+</button>
+<aside class="tweaks-panel" id="tweaks-panel" aria-hidden="true">
+  <div class="title-bar"><span>design</span><span class="x" id="tweaks-close">×</span></div>
+  <div class="theme-grid">
+    <button class="theme-pill" data-design="vedic">
+      <span class="swatch vedic"></span>
+      <span class="meta"><span class="name">Vedic · Spiritual</span><span class="sub">indigo · gold · sanskrit</span></span>
+    </button>
+    <button class="theme-pill" data-design="tech" aria-pressed="true">
+      <span class="swatch tech"></span>
+      <span class="meta"><span class="name">Advanced Tech</span><span class="sub">terminal · mono · dark</span></span>
+    </button>
+    <button class="theme-pill" data-design="generic">
+      <span class="swatch generic"></span>
+      <span class="meta"><span class="name">Generic</span><span class="sub">light · clean · sans</span></span>
+    </button>
+  </div>
+  <div class="footnote">your choice is remembered across visits</div>
+</aside>
+
+<script>
+  const PAGES = { vedic: 'index.html', tech: 'tech.html', generic: 'generic.html' };
+  const launcher = document.getElementById('tweaks-toggle');
+  const panel = document.getElementById('tweaks-panel');
+  const closeBtn = document.getElementById('tweaks-close');
+  const pills = document.querySelectorAll('[data-design]');
+  function togglePanel(open) {
+    const isOpen = open ?? !panel.classList.contains('open');
+    panel.classList.toggle('open', isOpen);
+    panel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    launcher.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+  function selectDesign(name) {
+    try { localStorage.setItem('design', name); } catch (e) {}
+    if (name !== 'tech') location.href = PAGES[name];
+  }
+  launcher.addEventListener('click', () => togglePanel());
+  closeBtn.addEventListener('click', () => togglePanel(false));
+  pills.forEach((p) => p.addEventListener('click', () => selectDesign(p.dataset.design)));
+  document.addEventListener('click', (e) => { if (!panel.contains(e.target) && !launcher.contains(e.target)) togglePanel(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') togglePanel(false); });
+</script>
+
+</body>
+</html>

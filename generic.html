@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manasa Basavaraj — Software engineer</title>
+<meta name="description" content="Software engineer building voice, music, and yoga tools with AI. Personal portfolio of Manasa Basavaraj.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #ffffff;
+  --bg-2:      #f7f8fa;
+  --bg-3:      #f0f2f5;
+  --surface:   #ffffff;
+  --fg:        #0f172a;
+  --fg-soft:   #334155;
+  --muted:     #64748b;
+  --dim:       #94a3b8;
+  --border:    #e2e8f0;
+  --border-hi: #cbd5e1;
+  --accent:    #2563eb;
+  --accent-2:  #1d4ed8;
+  --accent-soft: #dbeafe;
+  --green:     #10b981;
+  --amber:     #f59e0b;
+  --rose:      #f43f5e;
+
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.005em;
+  line-height: 1.5;
+  min-height: 100vh;
+  position: relative;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+
+/* nav */
+.top-nav {
+  position: sticky; top: 0; z-index: 30;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.top-nav .inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 16px 28px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
+}
+.brand .badge {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #6366f1);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 13px;
+}
+.top-nav .links {
+  display: flex; gap: 24px;
+  font-size: 14px; color: var(--muted);
+}
+.top-nav .links a { transition: color .2s ease; font-weight: 500; }
+.top-nav .links a:hover { color: var(--accent); }
+.top-nav .cta {
+  padding: 8px 14px;
+  background: var(--fg); color: #fff;
+  border-radius: 8px; font-size: 13px; font-weight: 500;
+  transition: background .2s ease, transform .15s ease;
+}
+.top-nav .cta:hover { background: #1e293b; transform: translateY(-1px); }
+
+.wrap {
+  max-width: 1100px; margin: 0 auto;
+  padding: 80px 28px 100px;
+}
+
+/* hero */
+.hero { padding: 40px 0 80px; max-width: 760px; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 999px;
+  font-size: 13px; font-weight: 500;
+  margin-bottom: 24px;
+}
+.eyebrow::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  animation: ping 2.5s ease-in-out infinite;
+}
+@keyframes ping {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.3); }
+}
+h1 {
+  font-size: clamp(40px, 5.5vw, 64px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+  color: var(--fg);
+}
+h1 .grad {
+  background: linear-gradient(120deg, var(--accent) 0%, #6366f1 50%, #a855f7 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero p {
+  font-size: 18px; line-height: 1.6; color: var(--muted);
+  max-width: 600px;
+}
+.hero .cta-row {
+  display: flex; gap: 12px; margin-top: 32px;
+}
+.hero .btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 11px 22px;
+  border-radius: 8px;
+  font-size: 14px; font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  transition: background .2s ease, border-color .2s ease, transform .15s ease, box-shadow .2s ease;
+}
+.hero .btn:hover { border-color: var(--border-hi); transform: translateY(-1px); box-shadow: 0 4px 12px -4px rgba(0,0,0,0.08); }
+.hero .btn.primary {
+  background: var(--fg); color: #fff; border-color: var(--fg);
+}
+.hero .btn.primary:hover { background: #1e293b; border-color: #1e293b; }
+
+/* stats row */
+.stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding: 36px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 80px;
+}
+@media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); gap: 18px; } }
+.stat .num { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 4px; }
+.stat .label { font-size: 13px; color: var(--muted); }
+
+/* section header */
+.sect-h {
+  display: flex; align-items: end; justify-content: space-between;
+  margin-bottom: 36px;
+  flex-wrap: wrap; gap: 16px;
+}
+.sect-h .pre {
+  font-size: 13px; color: var(--accent); font-weight: 500;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.sect-h h2 {
+  font-size: clamp(28px, 3.5vw, 40px); font-weight: 600; letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.sect-h .right { font-size: 14px; color: var(--muted); }
+
+/* projects grid */
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+
+.project {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  display: flex; flex-direction: column;
+  min-height: 280px;
+  transition: transform .25s cubic-bezier(.2,.8,.2,1), border-color .25s ease, box-shadow .25s ease;
+  overflow: hidden;
+}
+.project:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-hi);
+  box-shadow: 0 24px 50px -22px rgba(15, 23, 42, 0.15);
+}
+
+.project .head {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 18px;
+}
+.project .icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 18px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.project.p1 .icon { background: linear-gradient(135deg, #2563eb, #6366f1); }
+.project.p2 .icon { background: linear-gradient(135deg, #f43f5e, #f59e0b); }
+.project.p3 .icon { background: linear-gradient(135deg, #10b981, #06b6d4); }
+.project.p4 .icon { background: linear-gradient(135deg, #a855f7, #ec4899); }
+
+.project .head .meta { display: flex; flex-direction: column; gap: 2px; }
+.project .head .name { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: var(--fg); }
+.project .head .tag { font-size: 12px; color: var(--muted); font-weight: 500; }
+
+.project .desc {
+  font-size: 15px; line-height: 1.6; color: var(--fg-soft);
+  flex: 1;
+  margin-bottom: 18px;
+}
+.project .stack {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px;
+}
+.project .stack span {
+  font-size: 11px; font-weight: 500;
+  color: var(--muted);
+  padding: 4px 10px;
+  background: var(--bg-2);
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.project .actions {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-top: auto;
+}
+.project .btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px; font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--fg);
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
+}
+.project .btn:hover { background: var(--bg-2); border-color: var(--border-hi); transform: translateY(-1px); }
+.project .btn.primary {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
+.project .btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); }
+.project .btn svg { width: 13px; height: 13px; }
+
+/* about strip */
+.about {
+  margin-top: 80px;
+  padding: 44px 36px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  display: grid; grid-template-columns: 1.5fr 1fr; gap: 36px;
+  align-items: center;
+}
+@media (max-width: 760px) { .about { grid-template-columns: 1fr; padding: 32px 24px; } }
+.about h3 { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 12px; }
+.about p { font-size: 15px; line-height: 1.6; color: var(--muted); }
+.about .meta { display: grid; gap: 14px; }
+.about .meta-row { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+.about .meta-row .ic { font-size: 16px; }
+.about .meta-row .l { color: var(--muted); flex: 1; }
+.about .meta-row .v { color: var(--fg); font-weight: 500; }
+
+/* footer */
+footer {
+  margin-top: 80px;
+  padding: 36px 0;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; color: var(--muted);
+  flex-wrap: wrap; gap: 16px;
+}
+footer a { color: var(--muted); transition: color .2s ease; }
+footer a:hover { color: var(--accent); }
+footer .right { display: flex; gap: 24px; }
+
+/* entrance */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.r { opacity: 0; animation: fadeUp .7s cubic-bezier(.2,.8,.2,1) both; }
+.r1 { animation-delay: 0s; } .r2 { animation-delay: .08s; } .r3 { animation-delay: .16s; }
+.r4 { animation-delay: .24s; } .r5 { animation-delay: .32s; } .r6 { animation-delay: .40s; }
+
+/* ============================================================
+   SHARED THEME SWITCHER
+   ============================================================ */
+.tweaks-launcher {
+  position: fixed; right: 22px; bottom: 22px; z-index: 50;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px;
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 999px;
+  font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -8px rgba(0,0,0,0.15);
+  transition: transform .2s, border-color .2s;
+}
+.tweaks-launcher:hover { transform: translateY(-2px); border-color: var(--border-hi); }
+.tweaks-launcher svg { width: 14px; height: 14px; }
+.tweaks-panel {
+  position: fixed; right: 22px; bottom: 70px; z-index: 50;
+  width: 280px;
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,0.18);
+  opacity: 0; transform: translateY(8px) scale(0.97); pointer-events: none;
+  transition: opacity .2s, transform .2s;
+}
+.tweaks-panel.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.tweaks-panel .title-bar {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: 600;
+}
+.tweaks-panel .x { cursor: pointer; opacity: 0.5; font-size: 18px; transition: opacity .15s; }
+.tweaks-panel .x:hover { opacity: 1; }
+.theme-grid { display: grid; gap: 8px; }
+.theme-pill {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px;
+  background: transparent; border: 1px solid var(--border); border-radius: 10px;
+  cursor: pointer; text-align: left;
+  transition: background .2s, border-color .2s;
+  color: var(--fg); font-family: inherit;
+}
+.theme-pill:hover { background: var(--bg-2); }
+.theme-pill[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.theme-pill .swatch { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.05); }
+.theme-pill .swatch.vedic { background: radial-gradient(circle at 50% 50%, oklch(0.78 0.13 78), transparent 60%), oklch(0.18 0.06 285); }
+.theme-pill .swatch.tech { background: linear-gradient(135deg, oklch(0.10 0.005 250) 0%, oklch(0.10 0.005 250) 50%, oklch(0.75 0.16 145) 50%, oklch(0.75 0.16 145) 100%); }
+.theme-pill .swatch.generic { background: linear-gradient(135deg, oklch(0.45 0.16 250) 0%, oklch(0.45 0.16 250) 25%, oklch(0.985 0.005 250) 25%); }
+.theme-pill .meta { display: flex; flex-direction: column; gap: 2px; }
+.theme-pill .name { font-size: 13.5px; font-weight: 500; }
+.theme-pill .sub { font-size: 11px; color: var(--muted); }
+.tweaks-panel .footnote { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); font-size: 11px; color: var(--dim); }
+</style>
+</head>
+<body>
+
+<header class="top-nav">
+  <div class="inner">
+    <div class="brand"><span class="badge">M</span> Manasa Basavaraj</div>
+    <nav class="links">
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="https://github.com/codingyoga" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <a class="cta" href="mailto:codingyoga@gmail.com">Get in touch</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow r r1">Available for collaboration</div>
+    <h1 class="r r2">Building tools at the <span class="grad">edge of AI</span>, music, and breath.</h1>
+    <p class="r r3">I'm Manasa, a software engineer making small, focused tools — a real-time speech coach, an instrumental streaming flow, an AI yoga teacher, an AI playlist DJ. Each one a little experiment in what AI can do for the things I care about.</p>
+    <div class="cta-row r r4">
+      <a class="btn primary" href="#projects">View projects</a>
+      <a class="btn" href="https://github.com/codingyoga" target="_blank" rel="noopener">GitHub →</a>
+    </div>
+  </section>
+
+  <div class="stats r r4">
+    <div class="stat"><div class="num">4</div><div class="label">Active projects</div></div>
+    <div class="stat"><div class="num">30+</div><div class="label">GitHub repos</div></div>
+    <div class="stat"><div class="num">3</div><div class="label">Domains: voice · music · yoga</div></div>
+    <div class="stat"><div class="num">2026</div><div class="label">Currently shipping</div></div>
+  </div>
+
+  <section id="projects">
+    <div class="sect-h r r5">
+      <div>
+        <div class="pre">Projects</div>
+        <h2>What I'm building this year</h2>
+      </div>
+      <div class="right">Four quiet experiments, one thread.</div>
+    </div>
+
+    <div class="grid">
+
+      <article class="project p1 r r5">
+        <div class="head">
+          <div class="icon">V</div>
+          <div class="meta"><div class="name">Vaikhari</div><div class="tag">Voice · AI · Realtime</div></div>
+        </div>
+        <p class="desc">A real-time speech coach for live calls. You speak naturally on Zoom; Vaikhari listens, detects when you finish a thought, and shows a polished version in the voice you choose — Executive, Marketer, Technical, Friendly, Comedian.</p>
+        <div class="stack"><span>TypeScript</span><span>Web Audio</span><span>LLM</span></div>
+        <div class="actions">
+          <a class="btn" href="https://github.com/codingyoga/vaikhari" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.5c.5.09.68-.21.68-.48v-1.7c-2.78.6-3.36-1.34-3.36-1.34a2.66 2.66 0 0 0-1.1-1.46c-.91-.62.07-.6.07-.6a2.1 2.1 0 0 1 1.53 1.03 2.13 2.13 0 0 0 2.91.83 2.16 2.16 0 0 1 .63-1.34c-2.22-.25-4.55-1.11-4.55-4.94a3.87 3.87 0 0 1 1.03-2.69 3.6 3.6 0 0 1 .1-2.66s.84-.27 2.75 1.02a9.46 9.46 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02a3.6 3.6 0 0 1 .1 2.66 3.87 3.87 0 0 1 1.03 2.69c0 3.84-2.34 4.69-4.57 4.93a2.39 2.39 0 0 1 .68 1.85V21c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+            Source
+          </a>
+        </div>
+      </article>
+
+      <article class="project p2 r r5">
+        <div class="head">
+          <div class="icon">C</div>
+          <div class="meta"><div class="name">CarveMusic</div><div class="tag">Music · AI · Chat</div></div>
+        </div>
+        <p class="desc">Chat your way to a playlist. Describe a mood, a memory, a moment — it builds one that actually fits.</p>
+        <div class="stack"><span>TypeScript</span><span>Vercel</span><span>GPT</span></div>
+        <div class="actions">
+          <a class="btn primary" href="https://carvemusic.vercel.app" target="_blank" rel="noopener">Try it →</a>
+          <a class="btn" href="https://github.com/codingyoga/CarveMusic" target="_blank" rel="noopener">Source</a>
+        </div>
+      </article>
+
+      <article class="project p3 r r6">
+        <div class="head">
+          <div class="icon">I</div>
+          <div class="meta"><div class="name">Instrumental Flow</div><div class="tag">Music · AI · Streaming</div></div>
+        </div>
+        <p class="desc">Three traditions, twelve pieces, crossfading endlessly. AI-made instrumentals from India, Arabia, and Japan — for focus, study, and rest.</p>
+        <div class="stack"><span>React</span><span>Suno</span><span>Web Audio</span></div>
+        <div class="actions">
+          <a class="btn primary" href="https://codingyoga.github.io/instrumental-flow/" target="_blank" rel="noopener">Listen →</a>
+          <a class="btn" href="https://github.com/codingyoga/instrumental-flow" target="_blank" rel="noopener">Source</a>
+        </div>
+      </article>
+
+      <article class="project p4 r r6">
+        <div class="head">
+          <div class="icon">Y</div>
+          <div class="meta"><div class="name">Yoga Guru</div><div class="tag">Yoga · AI · Coaching</div></div>
+        </div>
+        <p class="desc">A strict personal yoga coach, AI-powered. It builds a personalized day-by-day program and walks with you through it. No fluff, no shortcuts.</p>
+        <div class="stack"><span>Python</span><span>LLM</span></div>
+        <div class="actions">
+          <a class="btn" href="https://github.com/codingyoga/yoga-guru" target="_blank" rel="noopener">Source</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="about" class="about r r6">
+    <div>
+      <h3>About</h3>
+      <p>I'm a software engineer who keeps coming back to four obsessions: voice, music, breath, and the quiet help AI can offer the things we already practice. I ship small, focused tools — and I keep my work boring, in the best way: well-tested, well-documented, made to last.</p>
+    </div>
+    <div class="meta">
+      <div class="meta-row"><span class="ic">📍</span><span class="l">Based in</span><span class="v">India · remote</span></div>
+      <div class="meta-row"><span class="ic">🛠</span><span class="l">Working with</span><span class="v">TypeScript, Python, AI</span></div>
+      <div class="meta-row"><span class="ic">📨</span><span class="l">Email</span><a class="v" href="mailto:codingyoga@gmail.com" style="color: var(--accent);">codingyoga@gmail.com</a></div>
+      <div class="meta-row"><span class="ic">💻</span><span class="l">GitHub</span><a class="v" href="https://github.com/codingyoga" target="_blank" rel="noopener" style="color: var(--accent);">@codingyoga</a></div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© 2026 Manasa Basavaraj — small experiments, made with care.</div>
+    <div class="right">
+      <a href="https://github.com/codingyoga" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:codingyoga@gmail.com">Email</a>
+    </div>
+  </footer>
+
+</div>
+
+<button class="tweaks-launcher" id="tweaks-toggle" aria-haspopup="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  Customize
+</button>
+<aside class="tweaks-panel" id="tweaks-panel" aria-hidden="true">
+  <div class="title-bar"><span>Design</span><span class="x" id="tweaks-close">×</span></div>
+  <div class="theme-grid">
+    <button class="theme-pill" data-design="vedic">
+      <span class="swatch vedic"></span>
+      <span class="meta"><span class="name">Vedic · Spiritual</span><span class="sub">indigo · gold · sanskrit</span></span>
+    </button>
+    <button class="theme-pill" data-design="tech">
+      <span class="swatch tech"></span>
+      <span class="meta"><span class="name">Advanced Tech</span><span class="sub">terminal · mono · dark</span></span>
+    </button>
+    <button class="theme-pill" data-design="generic" aria-pressed="true">
+      <span class="swatch generic"></span>
+      <span class="meta"><span class="name">Generic</span><span class="sub">light · clean · sans</span></span>
+    </button>
+  </div>
+  <div class="footnote">Your choice is remembered across visits</div>
+</aside>
+
+<script>
+  const PAGES = { vedic: 'index.html', tech: 'tech.html', generic: 'generic.html' };
+  const launcher = document.getElementById('tweaks-toggle');
+  const panel = document.getElementById('tweaks-panel');
+  const closeBtn = document.getElementById('tweaks-close');
+  const pills = document.querySelectorAll('[data-design]');
+  function togglePanel(open) {
+    const isOpen = open ?? !panel.classList.contains('open');
+    panel.classList.toggle('open', isOpen);
+    panel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    launcher.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+  function selectDesign(name) {
+    try { localStorage.setItem('design', name); } catch (e) {}
+    if (name !== 'generic') location.href = PAGES[name];
+  }
+  launcher.addEventListener('click', () => togglePanel());
+  closeBtn.addEventListener('click', () => togglePanel(false));
+  pills.forEach((p) => p.addEventListener('click', () => selectDesign(p.dataset.design)));
+  document.addEventListener('click', (e) => { if (!panel.contains(e.target) && !launcher.contains(e.target)) togglePanel(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') togglePanel(false); });
+</script>
+
+</body>
+</html>
