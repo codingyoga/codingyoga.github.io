@@ -1,259 +1,726 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="twilight">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manasa Muthugadahalli Basavaraj — Things I'm building</title>
-<meta name="description" content="Personal projects by Manasa Muthugadahalli Basavaraj — voice, music, and yoga, built with AI.">
+<title>Manasa Basavaraj — Building at the edge of AI</title>
+<meta name="description" content="Personal projects by Manasa Basavaraj — voice, music, and yoga, made with AI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  // Apply saved theme before first paint to avoid flash
+  (function () {
+    try {
+      var t = localStorage.getItem('theme') || 'twilight';
+      document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
 <style>
-:root {
-  --bg:        oklch(0.20 0.04 42);
-  --bg-deep:   oklch(0.13 0.035 42);
-  --fg:        oklch(0.98 0.005 60);
-  --muted:     oklch(0.65 0.015 50);
-  --dim:       oklch(0.42 0.018 45);
-  --border:    oklch(0.28 0.018 42);
-  --ember:     oklch(0.80 0.16 58);
-  --atm1:      oklch(0.30 0.10 42 / 0.70);
-  --atm2:      oklch(0.26 0.10 340 / 0.55);
-  --aurora1:   oklch(0.55 0.16 55 / 0.22);
-  --aurora2:   oklch(0.50 0.14 330 / 0.20);
-  --font-display: 'Instrument Serif', serif;
-  --font-body:    'Inter', sans-serif;
+/* ============================================================
+   THEME · TWILIGHT  (default)
+   warm aubergine + rose-peach gradient mesh + glass cards
+   ============================================================ */
+:root, [data-theme="twilight"] {
+  --bg-1:        oklch(0.13 0.045 320);
+  --bg-2:        oklch(0.10 0.035 320);
+  --surface:     oklch(0.20 0.05 320 / 0.55);
+  --surface-2:   oklch(0.13 0.04 322 / 0.55);
+  --fg:          oklch(0.96 0.012 75);
+  --muted:       oklch(0.74 0.018 70);
+  --dim:         oklch(0.55 0.020 320);
+  --border:      oklch(0.32 0.045 320);
+  --border-hi:   oklch(0.42 0.060 320);
+  --btn-bg:      oklch(0.20 0.04 320 / 0.6);
+  --btn-bg-hi:   oklch(0.26 0.05 320 / 0.85);
+
+  --accent:      oklch(0.78 0.16 25);
+  --accent-2:    oklch(0.84 0.12 50);
+  --accent-3:    oklch(0.72 0.20 350);
+  --accent-glow: oklch(0.78 0.16 25 / 0.18);
+  --accent-fg:   oklch(0.13 0.04 320);
+
+  --grad-title:  linear-gradient(120deg, var(--accent-2) 0%, var(--accent) 45%, var(--accent-3) 100%);
+  --grad-btn:    linear-gradient(120deg, var(--accent), var(--accent-3));
+
+  --card-blur:   18px;
+  --card-radius: 20px;
+
+  --logo-accent-color: var(--accent);
+}
+[data-theme="twilight"] body { background: var(--bg-2); }
+[data-theme="twilight"] .mesh { display: block; }
+[data-theme="twilight"] .stars, [data-theme="twilight"] .dots { display: none; }
+[data-theme="twilight"] .veil { display: block; }
+
+/* ============================================================
+   THEME · STUDIO
+   bright off-white + deep emerald + crisp minimal
+   ============================================================ */
+[data-theme="studio"] {
+  --bg-1:        oklch(0.98 0.004 110);
+  --bg-2:        oklch(0.965 0.005 110);
+  --surface:     oklch(1.00 0 0);
+  --surface-2:   oklch(1.00 0 0);
+  --fg:          oklch(0.18 0.02 250);
+  --muted:       oklch(0.42 0.015 250);
+  --dim:         oklch(0.62 0.012 250);
+  --border:      oklch(0.88 0.008 230);
+  --border-hi:   oklch(0.74 0.015 230);
+  --btn-bg:      oklch(0.97 0.004 110);
+  --btn-bg-hi:   oklch(0.94 0.006 110);
+
+  --accent:      oklch(0.50 0.13 150);
+  --accent-2:    oklch(0.58 0.12 145);
+  --accent-3:    oklch(0.42 0.13 155);
+  --accent-glow: oklch(0.50 0.13 150 / 0.12);
+  --accent-fg:   oklch(0.99 0.005 110);
+
+  --grad-title:  none;
+  --grad-btn:    var(--accent);
+
+  --card-blur:   0px;
+  --card-radius: 14px;
+
+  --logo-accent-color: var(--accent);
+}
+[data-theme="studio"] body {
+  background: var(--bg-2);
+  background-image:
+    radial-gradient(circle at 50% 0%, oklch(0.50 0.13 150 / 0.04), transparent 60%);
+}
+[data-theme="studio"] .mesh, [data-theme="studio"] .stars, [data-theme="studio"] .veil { display: none; }
+[data-theme="studio"] .dots { display: block; }
+[data-theme="studio"] .grain { opacity: 0; }
+[data-theme="studio"] .card { box-shadow: 0 1px 0 oklch(0.18 0.02 250 / 0.04); }
+[data-theme="studio"] .card:hover { box-shadow: 0 24px 50px -22px oklch(0.18 0.02 250 / 0.18); border-color: var(--border-hi); }
+
+/* ============================================================
+   THEME · MIDNIGHT
+   deep navy + electric lavender + faint twinkling stars
+   ============================================================ */
+[data-theme="midnight"] {
+  --bg-1:        oklch(0.10 0.025 275);
+  --bg-2:        oklch(0.07 0.020 275);
+  --surface:     oklch(0.13 0.025 275 / 0.65);
+  --surface-2:   oklch(0.08 0.020 275 / 0.65);
+  --fg:          oklch(0.97 0.005 260);
+  --muted:       oklch(0.72 0.010 270);
+  --dim:         oklch(0.50 0.015 275);
+  --border:      oklch(0.26 0.025 275);
+  --border-hi:   oklch(0.40 0.04 280);
+  --btn-bg:      oklch(0.13 0.025 275 / 0.7);
+  --btn-bg-hi:   oklch(0.20 0.035 280 / 0.85);
+
+  --accent:      oklch(0.78 0.18 295);
+  --accent-2:    oklch(0.85 0.13 320);
+  --accent-3:    oklch(0.70 0.20 280);
+  --accent-glow: oklch(0.78 0.18 295 / 0.20);
+  --accent-fg:   oklch(0.10 0.025 275);
+
+  --grad-title:  linear-gradient(120deg, var(--fg) 0%, var(--accent) 60%, var(--accent-2) 100%);
+  --grad-btn:    linear-gradient(120deg, var(--accent), var(--accent-2));
+
+  --card-blur:   16px;
+  --card-radius: 16px;
+
+  --logo-accent-color: var(--accent);
+}
+[data-theme="midnight"] body { background: var(--bg-2); }
+[data-theme="midnight"] .mesh, [data-theme="midnight"] .dots { display: none; }
+[data-theme="midnight"] .stars, [data-theme="midnight"] .veil { display: block; }
+[data-theme="midnight"] .veil {
+  background:
+    radial-gradient(circle 800px at 80% 10%, oklch(0.78 0.18 295 / 0.10), transparent 60%),
+    radial-gradient(circle 700px at 20% 80%, oklch(0.85 0.13 320 / 0.08), transparent 60%);
 }
 
+/* ============================================================
+   COMMON
+   ============================================================ */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: var(--bg-deep); color: var(--fg); font-family: var(--font-body); font-weight: 400; min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; }
+body {
+  color: var(--fg);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  font-feature-settings: "ss01", "cv11";
+  letter-spacing: -0.005em;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  transition: background-color .8s ease, color .8s ease;
+}
 a { color: inherit; text-decoration: none; }
-em { font-style: italic; font-family: var(--font-display); font-weight: 400; }
-.ember { color: var(--ember); }
+button { font: inherit; cursor: pointer; }
 
-.atmosphere {
-  position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+/* ---------- background fx ---------- */
+.mesh, .stars, .dots, .veil, .grain {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
 }
-.atmosphere::before, .atmosphere::after {
-  content: ''; position: absolute; border-radius: 50%; filter: blur(120px);
-}
-.atmosphere::before {
-  width: 60vw; height: 60vw; top: -10vw; left: -10vw;
-  background: radial-gradient(circle, var(--aurora1), transparent 60%);
-}
-.atmosphere::after {
-  width: 70vw; height: 70vw; bottom: -20vw; right: -20vw;
-  background: radial-gradient(circle, var(--aurora2), transparent 60%);
-}
+.veil { z-index: 1; }
 .grain {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.10;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  z-index: 1; opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* twilight: animated gradient mesh */
+.mesh { overflow: hidden; }
+.mesh .blob {
+  position: absolute; border-radius: 50%; filter: blur(110px); will-change: transform;
+}
+.mesh .b1 { width: 60vw; height: 60vw; left: -10vw; top: -15vw;
+  background: radial-gradient(circle, oklch(0.78 0.16 25), transparent 70%);
+  opacity: 0.55; animation: drift1 22s ease-in-out infinite; }
+.mesh .b2 { width: 50vw; height: 50vw; right: -10vw; top: 30vh;
+  background: radial-gradient(circle, oklch(0.72 0.20 350), transparent 70%);
+  opacity: 0.40; animation: drift2 26s ease-in-out infinite; }
+.mesh .b3 { width: 70vw; height: 70vw; left: 20vw; bottom: -25vw;
+  background: radial-gradient(circle, oklch(0.45 0.18 320), transparent 70%);
+  opacity: 0.55; animation: drift3 30s ease-in-out infinite; }
+.mesh .b4 { width: 40vw; height: 40vw; right: 5vw; top: -10vw;
+  background: radial-gradient(circle, oklch(0.84 0.12 50), transparent 70%);
+  opacity: 0.30; animation: drift4 28s ease-in-out infinite; }
+.veil { background: linear-gradient(180deg, oklch(0.10 0.03 320 / 0.55) 0%, oklch(0.10 0.03 320 / 0.30) 50%, oklch(0.10 0.03 320 / 0.65) 100%); }
+@keyframes drift1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(60px, 80px); } }
+@keyframes drift2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-80px, -40px); } }
+@keyframes drift3 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-40px, -60px); } }
+@keyframes drift4 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(50px, 60px); } }
+
+/* studio: subtle dot grid */
+.dots {
+  display: none;
+  background-image: radial-gradient(circle, oklch(0.60 0.01 230 / 0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black, transparent 75%);
+}
+
+/* midnight: starfield (CSS box-shadow technique) */
+.stars { display: none; overflow: hidden; }
+.stars::before, .stars::after {
+  content: ""; position: absolute; width: 1.5px; height: 1.5px; border-radius: 50%;
+  background: white;
+  box-shadow:
+    23vw 17vh 0 0.4px oklch(0.95 0 0 / 0.7),
+    44vw 8vh  0 0.4px oklch(0.95 0 0 / 0.6),
+    71vw 22vh 0 0.4px oklch(0.95 0 0 / 0.5),
+    87vw 11vh 0 0.4px oklch(0.95 0 0 / 0.7),
+    8vw 31vh  0 0.4px oklch(0.95 0 0 / 0.6),
+    33vw 39vh 0 0.4px oklch(0.95 0 0 / 0.5),
+    58vw 47vh 0 0.4px oklch(0.95 0 0 / 0.7),
+    78vw 38vh 0 0.4px oklch(0.95 0 0 / 0.6),
+    13vw 62vh 0 0.4px oklch(0.95 0 0 / 0.7),
+    36vw 70vh 0 0.4px oklch(0.95 0 0 / 0.5),
+    60vw 73vh 0 0.4px oklch(0.95 0 0 / 0.6),
+    82vw 64vh 0 0.4px oklch(0.95 0 0 / 0.7),
+    27vw 85vh 0 0.4px oklch(0.95 0 0 / 0.5),
+    52vw 91vh 0 0.4px oklch(0.95 0 0 / 0.6),
+    75vw 87vh 0 0.4px oklch(0.95 0 0 / 0.7),
+    91vw 78vh 0 0.4px oklch(0.95 0 0 / 0.5);
+  animation: twinkle 4s ease-in-out infinite;
+}
+.stars::after {
+  animation-delay: 2s;
+  box-shadow:
+    16vw 24vh 0 0.4px oklch(0.78 0.18 295 / 0.85),
+    49vw 18vh 0 0.4px oklch(0.85 0.13 320 / 0.85),
+    66vw 33vh 0 0.4px oklch(0.78 0.18 295 / 0.85),
+    19vw 54vh 0 0.4px oklch(0.85 0.13 320 / 0.85),
+    72vw 58vh 0 0.4px oklch(0.78 0.18 295 / 0.85),
+    41vw 80vh 0 0.4px oklch(0.85 0.13 320 / 0.85),
+    88vw 49vh 0 0.4px oklch(0.78 0.18 295 / 0.85);
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.8); }
+}
+
+/* ---------- layout ---------- */
 .wrap {
   position: relative; z-index: 2;
-  max-width: 1100px; margin: 0 auto; padding: 80px 32px 120px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 28px 100px;
 }
 
+/* ---------- nav ---------- */
 nav {
   display: flex; justify-content: space-between; align-items: center;
   padding-bottom: 80px;
 }
 .logo {
-  font-family: var(--font-display); font-size: 22px; letter-spacing: 0.5px;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
 }
-.logo .accent { color: var(--ember); font-style: italic; }
-nav .links { display: flex; gap: 28px; font-size: 14px; color: var(--muted); }
+.logo .dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--logo-accent-color);
+  box-shadow: 0 0 14px var(--logo-accent-color), 0 0 30px var(--accent-glow);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+.logo .accent { color: var(--logo-accent-color); font-weight: 400; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.7; transform: scale(1.2); }
+}
+nav .links {
+  display: flex; gap: 28px;
+  font-size: 14px; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.02em;
+}
 nav .links a { transition: color .25s ease; }
-nav .links a:hover { color: var(--fg); }
+nav .links a:hover { color: var(--accent); }
 
-.hero { padding: 40px 0 100px; max-width: 820px; }
+/* ---------- hero ---------- */
+.hero { padding: 60px 0 90px; max-width: 920px; }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
-  padding: 8px 16px; border-radius: 999px;
-  border: 1px solid var(--border); background: oklch(0.20 0.04 42 / 0.4);
-  backdrop-filter: blur(10px);
-  font-size: 13px; color: var(--muted); letter-spacing: 0.3px;
-  margin-bottom: 32px;
-}
-.eyebrow::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--ember);
-  box-shadow: 0 0 12px var(--ember);
-}
-.hero h1 {
-  font-family: var(--font-display); font-weight: 400;
-  font-size: clamp(48px, 7vw, 84px); line-height: 1.05; letter-spacing: -0.02em;
-  margin-bottom: 28px;
-}
-.hero p {
-  font-size: 18px; line-height: 1.6; color: var(--muted); max-width: 600px;
-}
-
-.section-label {
-  font-family: var(--font-body); font-size: 12px; letter-spacing: 0.25em;
-  text-transform: uppercase; color: var(--dim); margin-bottom: 24px;
-}
-.section-title {
-  font-family: var(--font-display); font-weight: 400;
-  font-size: clamp(32px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.01em;
-  margin-bottom: 60px; max-width: 700px;
-}
-
-.projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
-@media (max-width: 760px) { .projects { grid-template-columns: 1fr; } }
-
-.project {
-  position: relative; padding: 36px 32px;
-  border: 1px solid var(--border); border-radius: 18px;
-  background: linear-gradient(180deg, oklch(0.22 0.04 42 / 0.5), oklch(0.16 0.04 42 / 0.5));
+  padding: 8px 16px;
+  background: var(--surface);
   backdrop-filter: blur(14px);
-  display: flex; flex-direction: column; gap: 20px;
-  transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--muted); letter-spacing: 0.04em;
+  margin-bottom: 36px;
+}
+.eyebrow .live {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+h1 {
+  font-size: clamp(48px, 7.5vw, 92px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  margin-bottom: 28px;
+  color: var(--fg);
+}
+h1 .grad {
+  background: var(--grad-title), var(--accent);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--accent);
+  animation: shift 9s ease-in-out infinite;
+}
+[data-theme="studio"] h1 .grad {
+  background: none; -webkit-background-clip: initial; background-clip: initial;
+  color: var(--accent); animation: none;
+}
+@keyframes shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.hero p { font-size: 19px; line-height: 1.6; color: var(--muted); max-width: 620px; }
+
+/* ---------- bento ---------- */
+.section-mark {
+  display: flex; align-items: baseline; gap: 18px; margin-bottom: 28px;
+}
+.section-mark .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted);
+}
+.section-mark .rule { flex: 1; height: 1px; background: var(--border); }
+.section-mark .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--dim); letter-spacing: 0.1em;
+}
+
+.bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+.span-7 { grid-column: span 7; } .span-5 { grid-column: span 5; }
+@media (max-width: 880px) { .span-7, .span-5 { grid-column: span 12; } }
+
+.card {
+  position: relative;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+  backdrop-filter: blur(var(--card-blur));
+  -webkit-backdrop-filter: blur(var(--card-blur));
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 32px;
+  display: flex; flex-direction: column;
+  min-height: 320px;
   overflow: hidden;
+  isolation: isolate;
+  transition: transform .4s cubic-bezier(.2,.8,.2,1), border-color .25s ease, box-shadow .35s ease, background .8s ease;
 }
-.project::before {
-  content: ''; position: absolute; inset: 0; border-radius: 18px;
-  background: linear-gradient(135deg, var(--c1, transparent), var(--c2, transparent));
-  opacity: 0; transition: opacity .35s ease; pointer-events: none;
+.card::before {
+  content: ""; position: absolute; inset: 0; border-radius: var(--card-radius); pointer-events: none;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), var(--card-glow, transparent), transparent 60%);
+  opacity: 0; transition: opacity .35s ease;
 }
-.project:hover {
-  transform: translateY(-4px);
-  border-color: oklch(0.40 0.06 42);
-  box-shadow: 0 20px 60px -20px oklch(0.10 0.04 42 / 0.6);
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--border-hi);
+  box-shadow: 0 28px 70px -28px oklch(0.10 0.04 320 / 0.6);
 }
-.project:hover::before { opacity: 0.18; }
+[data-theme="studio"] .card:hover { box-shadow: 0 24px 50px -22px oklch(0.18 0.02 250 / 0.18); }
+[data-theme="midnight"] .card:hover { box-shadow: 0 28px 70px -28px oklch(0.05 0.02 275 / 0.85), 0 0 40px -10px var(--accent-glow); }
+.card:hover::before { opacity: 1; }
 
-.p-meta { display: flex; justify-content: space-between; align-items: center; }
-.p-cat { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ember); }
-.p-glyph { font-family: var(--font-display); font-size: 22px; color: var(--ember); opacity: 0.7; }
+.card-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.cat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+}
+.num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--dim); letter-spacing: 0.08em; }
 
-.p-title {
-  font-family: var(--font-display); font-weight: 400;
-  font-size: 32px; line-height: 1.15; letter-spacing: -0.01em;
+.title {
+  font-size: 30px; font-weight: 600; letter-spacing: -0.022em;
+  margin-top: 14px; margin-bottom: 10px; color: var(--fg);
 }
-.p-desc {
-  font-size: 15px; line-height: 1.6; color: var(--muted); flex: 1;
+[data-theme="twilight"] .title, [data-theme="midnight"] .title {
+  background: var(--grad-title);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
 }
-.p-links { display: flex; gap: 12px; flex-wrap: wrap; padding-top: 8px; }
-.p-link {
+.desc { font-size: 15px; line-height: 1.6; color: var(--muted); flex: 1; }
+.actions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+
+.btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 9px 16px; border-radius: 999px;
-  font-size: 13px; letter-spacing: 0.02em;
-  border: 1px solid var(--border); background: oklch(0.18 0.04 42 / 0.6);
-  transition: background .2s ease, border-color .2s ease, color .2s ease;
+  font-size: 13px; font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--btn-bg); color: var(--fg);
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
+  backdrop-filter: blur(8px);
 }
-.p-link:hover { background: oklch(0.26 0.06 42 / 0.8); border-color: var(--ember); color: var(--ember); }
-.p-link.primary { background: var(--ember); color: oklch(0.13 0.04 42); border-color: var(--ember); font-weight: 500; }
-.p-link.primary:hover { background: oklch(0.85 0.16 58); color: oklch(0.10 0.04 42); }
-.p-link svg { width: 13px; height: 13px; }
+.btn:hover { background: var(--btn-bg-hi); border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.btn.primary {
+  background: var(--grad-btn);
+  color: var(--accent-fg); border-color: transparent; font-weight: 600;
+  box-shadow: 0 6px 24px -8px var(--accent-glow);
+}
+.btn.primary:hover { transform: translateY(-1px); box-shadow: 0 12px 36px -8px var(--accent-glow); color: var(--accent-fg); border-color: transparent; }
+.btn svg { width: 13px; height: 13px; }
 
+/* ---------- previews ---------- */
+.preview {
+  position: relative; margin: 20px 0 4px; height: 110px;
+  border-radius: 12px; overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+}
+[data-theme="studio"] .preview { background: oklch(0.985 0.004 110); }
+
+/* Vaikhari waves */
+.wave-bars { display: flex; align-items: center; gap: 5px; height: 70%; }
+.wave-bars span {
+  width: 5px; border-radius: 3px;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  animation: wave 1.5s ease-in-out infinite;
+  transform-origin: center;
+}
+.wave-bars span:nth-child(1) { height: 30%; animation-delay: 0s; }
+.wave-bars span:nth-child(2) { height: 60%; animation-delay: 0.1s; }
+.wave-bars span:nth-child(3) { height: 90%; animation-delay: 0.2s; }
+.wave-bars span:nth-child(4) { height: 70%; animation-delay: 0.3s; }
+.wave-bars span:nth-child(5) { height: 50%; animation-delay: 0.4s; }
+.wave-bars span:nth-child(6) { height: 80%; animation-delay: 0.5s; }
+.wave-bars span:nth-child(7) { height: 40%; animation-delay: 0.6s; }
+.wave-bars span:nth-child(8) { height: 65%; animation-delay: 0.7s; }
+.wave-bars span:nth-child(9) { height: 55%; animation-delay: 0.8s; }
+.wave-bars span:nth-child(10){ height: 75%; animation-delay: 0.9s; }
+@keyframes wave { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+.card:hover .wave-bars span { animation-duration: 0.85s; }
+
+/* CarveMusic chat */
+.chat { width: 80%; display: flex; flex-direction: column; gap: 7px; }
+.bubble {
+  padding: 8px 12px; border-radius: 14px; font-size: 12px; max-width: 80%;
+  font-family: 'JetBrains Mono', monospace;
+}
+.bubble.user {
+  align-self: flex-end;
+  background: var(--grad-btn); color: var(--accent-fg);
+  border-bottom-right-radius: 4px; font-weight: 500;
+}
+.bubble.bot {
+  align-self: flex-start;
+  background: var(--surface); color: var(--fg);
+  border-bottom-left-radius: 4px; border: 1px solid var(--border);
+}
+.bubble.typing { display: inline-flex; gap: 4px; align-items: center; padding: 11px 12px; }
+.bubble.typing span { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); animation: dot 1.4s ease-in-out infinite; }
+.bubble.typing span:nth-child(2) { animation-delay: 0.2s; }
+.bubble.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dot { 0%, 80%, 100% { opacity: 0.3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+
+/* Instrumental Flow orbits */
+.orbits { position: relative; width: 140px; height: 90px; }
+.orbit-line { position: absolute; left: 0; right: 0; top: 50%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-hi), transparent); }
+.disc {
+  position: absolute; left: 50%; top: 50%;
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1.5px solid var(--accent); color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  background: var(--surface-2);
+  margin: -19px 0 0 -19px;
+  animation: float 3s ease-in-out infinite;
+}
+.disc.d1 { transform: translate(-50px, 0); --tx: -50px; }
+.disc.d2 { transform: translate(0, -8px); --tx: 0; border-color: var(--accent-2); color: var(--accent-2); animation-delay: 0.4s; }
+.disc.d3 { transform: translate(50px, 0); --tx: 50px; border-color: var(--accent-3); color: var(--accent-3); animation-delay: 0.8s; }
+@keyframes float { 0%, 100% { transform: translate(var(--tx, 0), -2px); } 50% { transform: translate(var(--tx, 0), -14px); } }
+
+/* Yoga Guru breathing */
+.breathing { position: relative; width: 92px; height: 92px; }
+.breathing .ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  animation: breathe 5s ease-in-out infinite;
+}
+.breathing .ring:nth-child(2) { animation-delay: 0.6s; opacity: 0.55; border-color: var(--accent-2); }
+.breathing .ring:nth-child(3) { animation-delay: 1.2s; opacity: 0.30; border-color: var(--accent-3); }
+.breathing .core {
+  position: absolute; left: 50%; top: 50%; width: 18px; height: 18px;
+  margin: -9px 0 0 -9px;
+  background: var(--grad-btn); border-radius: 50%;
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+@keyframes breathe { 0%, 100% { transform: scale(0.5); opacity: 0.85; } 50% { transform: scale(1); opacity: 0.25; } }
+
+/* ---------- footer ---------- */
 footer {
-  margin-top: 120px; padding-top: 40px;
+  margin-top: 100px; padding-top: 36px;
   border-top: 1px solid var(--border);
   display: flex; justify-content: space-between; align-items: center;
   font-size: 13px; color: var(--dim);
   flex-wrap: wrap; gap: 16px;
+  font-family: 'JetBrains Mono', monospace;
 }
-footer a { color: var(--muted); transition: color .25s ease; }
-footer a:hover { color: var(--ember); }
+footer a { color: var(--muted); transition: color .2s ease; }
+footer a:hover { color: var(--accent); }
 footer .right { display: flex; gap: 24px; }
 
-@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-.fade-1 { animation: fadeUp .8s ease both; }
-.fade-2 { animation: fadeUp .8s ease both .1s; }
-.fade-3 { animation: fadeUp .8s ease both .2s; }
-.fade-4 { animation: fadeUp .8s ease both .3s; }
+/* ---------- entrance ---------- */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.r { opacity: 0; animation: fadeUp .9s cubic-bezier(.2,.8,.2,1) both; }
+.r1 { animation-delay: 0s; } .r2 { animation-delay: .1s; } .r3 { animation-delay: .2s; }
+.r4 { animation-delay: .3s; } .r5 { animation-delay: .4s; } .r6 { animation-delay: .5s; } .r7 { animation-delay: .6s; }
+
+/* ============================================================
+   THEME SWITCHER
+   ============================================================ */
+.tweaks-launcher {
+  position: fixed; right: 22px; bottom: 22px; z-index: 50;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px;
+  background: var(--surface); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.04em;
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+  box-shadow: 0 8px 24px -8px oklch(0.05 0 0 / 0.3);
+  transition: transform .2s ease, border-color .2s ease;
+}
+.tweaks-launcher:hover { transform: translateY(-2px); border-color: var(--accent); }
+.tweaks-launcher svg { width: 13px; height: 13px; }
+
+.tweaks-panel {
+  position: fixed; right: 22px; bottom: 70px; z-index: 50;
+  width: 270px;
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 16px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 60px -20px oklch(0.05 0 0 / 0.4);
+  opacity: 0; transform: translateY(8px) scale(0.97); pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.tweaks-panel.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.tweaks-panel .title-bar {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.tweaks-panel .title-bar .x {
+  cursor: pointer; color: var(--dim); font-size: 14px;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .15s ease, color .15s ease;
+}
+.tweaks-panel .title-bar .x:hover { background: var(--btn-bg-hi); color: var(--fg); }
+.theme-grid { display: grid; gap: 8px; }
+.theme-pill {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: background .2s ease, border-color .2s ease;
+  color: var(--fg);
+  font-family: inherit;
+}
+.theme-pill:hover { background: var(--btn-bg-hi); }
+.theme-pill[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--btn-bg-hi);
+}
+.theme-pill .swatch {
+  width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+  border: 1px solid oklch(0 0 0 / 0.1);
+  position: relative; overflow: hidden;
+}
+.theme-pill .swatch.twilight {
+  background:
+    radial-gradient(circle at 30% 30%, oklch(0.78 0.16 25), transparent 60%),
+    radial-gradient(circle at 70% 70%, oklch(0.72 0.20 350), transparent 60%),
+    oklch(0.13 0.045 320);
+}
+.theme-pill .swatch.studio {
+  background: linear-gradient(135deg, oklch(0.50 0.13 150) 0%, oklch(0.50 0.13 150) 30%, oklch(0.97 0.005 110) 30%, oklch(0.97 0.005 110) 100%);
+}
+.theme-pill .swatch.midnight {
+  background:
+    radial-gradient(circle at 60% 40%, oklch(0.78 0.18 295), transparent 50%),
+    radial-gradient(circle at 30% 70%, oklch(0.85 0.13 320), transparent 50%),
+    oklch(0.07 0.020 275);
+}
+.theme-pill .meta { display: flex; flex-direction: column; gap: 2px; }
+.theme-pill .name { font-size: 13.5px; font-weight: 500; letter-spacing: -0.005em; }
+.theme-pill .sub { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+.tweaks-panel .footnote {
+  margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border);
+  font-size: 11px; color: var(--dim); font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.02em;
+}
 </style>
 </head>
 <body>
 
-<div class="atmosphere"></div>
+<div class="mesh">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+</div>
+<div class="dots"></div>
+<div class="stars"></div>
+<div class="veil"></div>
 <div class="grain"></div>
 
 <div class="wrap">
 
-  <nav class="fade-1">
-    <div class="logo">Manasa<span class="accent"> · </span>codingyoga</div>
+  <nav class="r r1">
+    <div class="logo"><span class="dot"></span> Manasa<span class="accent"> · </span>codingyoga</div>
     <div class="links">
-      <a href="#projects">Projects</a>
-      <a href="https://github.com/codingyoga" target="_blank" rel="noopener">GitHub</a>
+      <a href="#projects">projects</a>
+      <a href="https://github.com/codingyoga" target="_blank" rel="noopener">github ↗</a>
     </div>
   </nav>
 
-  <section class="hero fade-2">
-    <div class="eyebrow">Building with AI · voice · music · yoga</div>
-    <h1>Things I'm <em>building</em> at the<br>edge of <em class="ember">AI</em>, music, and breath.</h1>
-    <p>I make small, focused tools — a real-time speech coach, an instrumental streaming flow, an AI yoga teacher, an AI playlist DJ. Each one a little experiment in what AI can do for the things I care about.</p>
+  <section class="hero">
+    <div class="eyebrow r r2"><span class="live"></span> AI · voice · music · yoga</div>
+    <h1 class="r r3">
+      Things I'm building<br>
+      at the <span class="grad">edge of AI</span>,<br>
+      music, and breath.
+    </h1>
+    <p class="r r4">
+      I make small, focused tools — a real-time speech coach, an instrumental streaming flow, an AI yoga teacher, an AI playlist DJ. Each one a little experiment in what AI can do for the things I care about.
+    </p>
   </section>
 
-  <section id="projects" class="fade-3">
-    <div class="section-label">§ Projects</div>
-    <h2 class="section-title">Four <em>quiet experiments</em>, each in its own world.</h2>
+  <section id="projects">
+    <div class="section-mark r r5">
+      <span class="label">§ Projects</span>
+      <span class="rule"></span>
+      <span class="num">04 / 04</span>
+    </div>
 
-    <div class="projects">
+    <div class="bento">
 
-      <article class="project" style="--c1: oklch(0.50 0.14 50); --c2: oklch(0.26 0.10 25);">
-        <div class="p-meta">
-          <span class="p-cat">Voice · AI</span>
-          <span class="p-glyph">۞</span>
+      <article class="card span-7 r r5" style="--card-glow: var(--accent-glow);">
+        <div class="card-row">
+          <span class="cat">Voice · AI · Realtime</span>
+          <span class="num">01 / 04</span>
         </div>
-        <h3 class="p-title">Vaikhari</h3>
-        <p class="p-desc">A real-time speech coach for live calls. Speak naturally on Zoom; Vaikhari listens, detects when you finish a thought, and shows a polished version in the voice you choose — Executive, Marketer, Technical, Friendly, or Comedian.</p>
-        <div class="p-links">
-          <a class="p-link" href="https://github.com/codingyoga/vaikhari" target="_blank" rel="noopener">
+        <h3 class="title">Vaikhari</h3>
+        <p class="desc">A real-time speech coach for live calls. You speak naturally on Zoom; Vaikhari listens, detects when you finish a thought, and shows a polished version in the voice you choose — Executive, Marketer, Technical, Friendly, Comedian.</p>
+        <div class="preview" aria-hidden="true">
+          <div class="wave-bars">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="actions">
+          <a class="btn" href="https://github.com/codingyoga/vaikhari" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.84-2.34 4.68-4.57 4.93.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z"/></svg>
-            Source
+            source
           </a>
         </div>
       </article>
 
-      <article class="project" style="--c1: oklch(0.52 0.12 30); --c2: oklch(0.26 0.10 350);">
-        <div class="p-meta">
-          <span class="p-cat">Music · AI</span>
-          <span class="p-glyph">❋</span>
+      <article class="card span-5 r r6" style="--card-glow: var(--accent-glow);">
+        <div class="card-row">
+          <span class="cat">Music · AI · Chat</span>
+          <span class="num">02 / 04</span>
         </div>
-        <h3 class="p-title">CarveMusic</h3>
-        <p class="p-desc">An AI chat songs playlist generator. Tell it a mood, a memory, a moment — it builds you a playlist that actually fits. Less crate-digging, more conversation.</p>
-        <div class="p-links">
-          <a class="p-link primary" href="https://carve-music.vercel.app" target="_blank" rel="noopener">
-            ▶ Try it
-          </a>
-          <a class="p-link" href="https://github.com/codingyoga/CarveMusic" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.84-2.34 4.68-4.57 4.93.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z"/></svg>
-            Source
-          </a>
+        <h3 class="title">CarveMusic</h3>
+        <p class="desc">Chat your way to a playlist. Describe a mood, a memory, a moment — it builds one that actually fits.</p>
+        <div class="preview" aria-hidden="true">
+          <div class="chat">
+            <div class="bubble user">monsoon evening, slow</div>
+            <div class="bubble bot typing"><span></span><span></span><span></span></div>
+          </div>
         </div>
-      </article>
-
-      <article class="project" style="--c1: oklch(0.42 0.11 35); --c2: oklch(0.22 0.08 15);">
-        <div class="p-meta">
-          <span class="p-cat">Music · AI</span>
-          <span class="p-glyph">✵</span>
-        </div>
-        <h3 class="p-title">Instrumental Flow</h3>
-        <p class="p-desc">AI-generated world instrumentals — three traditions (India, Arabic, Japan), twelve pieces, crossfading continuously. No vocals, no ads, no repeats. For focus, study, and rest.</p>
-        <div class="p-links">
-          <a class="p-link primary" href="https://codingyoga.github.io/instrumental-flow/" target="_blank" rel="noopener">
-            ▶ Listen
-          </a>
-          <a class="p-link" href="https://github.com/codingyoga/instrumental-flow" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.84-2.34 4.68-4.57 4.93.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z"/></svg>
-            Source
-          </a>
+        <div class="actions">
+          <a class="btn primary" href="https://carve-music.vercel.app" target="_blank" rel="noopener">try it ↗</a>
+          <a class="btn" href="https://github.com/codingyoga/CarveMusic" target="_blank" rel="noopener">source</a>
         </div>
       </article>
 
-      <article class="project" style="--c1: oklch(0.48 0.09 160); --c2: oklch(0.24 0.07 200);">
-        <div class="p-meta">
-          <span class="p-cat">Yoga · AI</span>
-          <span class="p-glyph">◈</span>
+      <article class="card span-5 r r6" style="--card-glow: var(--accent-glow);">
+        <div class="card-row">
+          <span class="cat">Music · AI · Streaming</span>
+          <span class="num">03 / 04</span>
         </div>
-        <h3 class="p-title">Yoga Guru</h3>
-        <p class="p-desc">A strict personal yoga coach, AI-powered. Builds a personalized day-by-day program and walks you through it. No fluff, no skipping ahead — practice the way teachers actually teach.</p>
-        <div class="p-links">
-          <a class="p-link" href="https://github.com/codingyoga/yoga-guru" target="_blank" rel="noopener">
+        <h3 class="title">Instrumental Flow</h3>
+        <p class="desc">Three traditions, twelve pieces, crossfading endlessly. AI-made instrumentals from India, Arabia, and Japan — for focus, study, and rest.</p>
+        <div class="preview" aria-hidden="true">
+          <div class="orbits">
+            <div class="orbit-line"></div>
+            <div class="disc d1">۞</div>
+            <div class="disc d2">✵</div>
+            <div class="disc d3">◈</div>
+          </div>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="https://codingyoga.github.io/instrumental-flow/" target="_blank" rel="noopener">listen ▸</a>
+          <a class="btn" href="https://github.com/codingyoga/instrumental-flow" target="_blank" rel="noopener">source</a>
+        </div>
+      </article>
+
+      <article class="card span-7 r r7" style="--card-glow: var(--accent-glow);">
+        <div class="card-row">
+          <span class="cat">Yoga · AI · Daily Practice</span>
+          <span class="num">04 / 04</span>
+        </div>
+        <h3 class="title">Yoga Guru</h3>
+        <p class="desc">A strict personal yoga coach, AI-powered. It builds you a personalized day-by-day program and walks with you through it. No fluff, no skipping ahead — practice the way teachers actually teach, one quiet day at a time.</p>
+        <div class="preview" aria-hidden="true">
+          <div class="breathing">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="core"></div>
+          </div>
+        </div>
+        <div class="actions">
+          <a class="btn" href="https://github.com/codingyoga/yoga-guru" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.84-2.34 4.68-4.57 4.93.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z"/></svg>
-            Source
+            source
           </a>
         </div>
       </article>
@@ -261,15 +728,91 @@ footer .right { display: flex; gap: 24px; }
     </div>
   </section>
 
-  <footer class="fade-4">
-    <div>© 2026 Manasa Muthugadahalli Basavaraj — quiet experiments, made with care.</div>
+  <footer>
+    <div>© 2026 manasa b. — small experiments, made with care.</div>
     <div class="right">
-      <a href="https://github.com/codingyoga" target="_blank" rel="noopener">GitHub</a>
-      <a href="mailto:codingyoga@gmail.com">Email</a>
+      <a href="https://github.com/codingyoga" target="_blank" rel="noopener">github ↗</a>
+      <a href="mailto:codingyoga@gmail.com">email</a>
     </div>
   </footer>
 
 </div>
+
+<!-- Theme switcher -->
+<button class="tweaks-launcher" id="tweaks-toggle" aria-haspopup="true" aria-expanded="false">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  customize
+</button>
+
+<aside class="tweaks-panel" id="tweaks-panel" aria-hidden="true">
+  <div class="title-bar">
+    <span>theme</span>
+    <span class="x" id="tweaks-close" role="button" aria-label="Close">×</span>
+  </div>
+  <div class="theme-grid">
+    <button class="theme-pill" data-theme-set="twilight" aria-pressed="false">
+      <span class="swatch twilight"></span>
+      <span class="meta">
+        <span class="name">Twilight</span>
+        <span class="sub">warm · soulful · animated</span>
+      </span>
+    </button>
+    <button class="theme-pill" data-theme-set="studio" aria-pressed="false">
+      <span class="swatch studio"></span>
+      <span class="meta">
+        <span class="name">Studio</span>
+        <span class="sub">light · clean · minimal</span>
+      </span>
+    </button>
+    <button class="theme-pill" data-theme-set="midnight" aria-pressed="false">
+      <span class="swatch midnight"></span>
+      <span class="meta">
+        <span class="name">Midnight</span>
+        <span class="sub">dark · electric · poetic</span>
+      </span>
+    </button>
+  </div>
+  <div class="footnote">your choice is remembered</div>
+</aside>
+
+<script>
+  // pointer-tracked card glow
+  document.querySelectorAll('.card').forEach((card) => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      card.style.setProperty('--my', `${e.clientY - r.top}px`);
+    });
+  });
+
+  // theme switcher
+  const root = document.documentElement;
+  const launcher = document.getElementById('tweaks-toggle');
+  const panel = document.getElementById('tweaks-panel');
+  const closeBtn = document.getElementById('tweaks-close');
+  const pills = document.querySelectorAll('[data-theme-set]');
+
+  function setTheme(name) {
+    root.dataset.theme = name;
+    try { localStorage.setItem('theme', name); } catch (e) {}
+    pills.forEach((p) => p.setAttribute('aria-pressed', p.dataset.themeSet === name ? 'true' : 'false'));
+  }
+  function togglePanel(open) {
+    const isOpen = open ?? !panel.classList.contains('open');
+    panel.classList.toggle('open', isOpen);
+    panel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    launcher.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  setTheme(root.dataset.theme || 'twilight');
+  launcher.addEventListener('click', () => togglePanel());
+  closeBtn.addEventListener('click', () => togglePanel(false));
+  pills.forEach((p) => p.addEventListener('click', () => setTheme(p.dataset.themeSet)));
+  document.addEventListener('click', (e) => {
+    if (!panel.contains(e.target) && !launcher.contains(e.target)) togglePanel(false);
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') togglePanel(false); });
+</script>
 
 </body>
 </html>
